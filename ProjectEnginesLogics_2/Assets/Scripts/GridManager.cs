@@ -6,29 +6,31 @@ using TMPro;
 
 public class GridManager : MonoBehaviour
 {
+
     public GameManager gameManager;
     [SerializeField]
     private int gridSizeX;
     [SerializeField]
     private int gridSizeZ;
-    public int[,] grid;
+    // The number which will determine the number of bombs
+    // (gridSizeX*gridSizeZ)/bombDevide=totalBombs
+    [SerializeField]
+    private int bombDevide;
 
     public TileSO tileSO;
     public List<TileSO> safeTileSOs;
+    public List<TileSO> bombTileSOs;
     public GameObject prefabTile;
     public List<GameObject> spawnedTiles;
 
     // Flood Fill Algorithm needed
 
 
-        // STARTS RAHEEL'S PART
+    // STARTS RAHEEL'S PART
     public static GridManager instance;
     public List<GameObject> prefabTiles;
 
     public int[,] Grid;
-
-    public int mapSizeX = 10;
-    public int mapSizeZ = 10;
 
     private void Awake()
     {
@@ -40,14 +42,28 @@ public class GridManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         gridSizeX = gameManager.gridSizeX;
         gridSizeZ = gameManager.gridSizeZ;
-        Grid = new int[mapSizeX, mapSizeZ];
-        for (int i = 0; i < mapSizeX; i++)
+        bombDevide = gameManager.bombDevide;
+        Grid = new int[gridSizeX, gridSizeZ];
+        for (int x = 0; x < gridSizeX; x++)
         {
-            for (int y = 0; y < mapSizeZ; y++)
+            for (int z = 0; z < gridSizeZ; z++)
             {
-                SpawnTile(i, y);
+                SpawnTile(x, z);
             }
         }
+        PlaceBombs();
+        foreach(TileSO singleTileSO in bombTileSOs)
+        {
+            singleTileSO.spriteHolder.color = Color.red;
+            singleTileSO.spriteHolder.gameObject.SetActive(true);
+        }
+        // This was for testing purposes
+        //foreach (TileSO singleSO in safeTileSOs)
+        //{
+        //    singleSO.adjacentTMP.text = "[" + singleSO.coordX.ToString() +","
+        //        + singleSO.coordZ.ToString() + "]";
+        //    singleSO.adjacentTMP.gameObject.SetActive(true);
+        //}
     }
 
     public void SpawnTile(int x, int z)
@@ -64,7 +80,7 @@ public class GridManager : MonoBehaviour
     {
         var newSO = Instantiate(tileSO);
         newSO.coordX = x;
-        newSO.coordX = z;
+        newSO.coordZ = z;
         newSO.tilePrefab = newTile;
         newSO.spriteHolder = newTile.transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
         newSO.adjacentTMP = newTile.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -73,18 +89,27 @@ public class GridManager : MonoBehaviour
         safeTileSOs.Add(newSO);
     }
 
-    //    public bool IsEdge(int x, int z)
-    //{
-    //    if (z == 0 || x == 0 || z == mapSizeZ - 1 || x == mapSizeX - 1)
-    //    {
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
     public void TellMyLocation(Vector3 tileLocation)
     {
         print(" ------ >" + tileLocation);
     }
+    public void PlaceBombs()
+    {
+        for (int i = 0; i < ((gridSizeX * gridSizeZ)/bombDevide); i++)
+        {
+            int randomTileSO = Random.Range(0, safeTileSOs.Count);
 
+            safeTileSOs[randomTileSO].type = Type.Bomb;
+            bombTileSOs.Add(safeTileSOs[randomTileSO]);
+            safeTileSOs.Remove(safeTileSOs[randomTileSO]);
+            // FLOOD FILL CHECK HERE
+            // if returns true
+            //      continue
+            // else if false
+            //      remove from bombTileSOs
+            //      readd to safeTileSOs
+            //      i--;
+            //      chose new randomX & randomZ
+        }
+    }
 }

@@ -7,5 +7,6 @@ public class GameManager : MonoBehaviour
     public List<Sprite> tileSprites;
     public int gridSizeX;
     public int gridSizeZ;
+    public int bombDevide;
 
 }

@@ -43,6 +43,10 @@ public class RRGridManager : MonoBehaviour   // RAHEEL'S CODE
                 SpawnTile(x, z);
             }
         }
+        foreach(TileSO tileSO in safeTileSOs)
+        {
+            tileSO.adjacentTMP.gameObject.SetActive(true);
+        }
     }
 
     public void SpawnTile(int x, int z)

@@ -567,8 +567,10 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   gridSizeX: 0
   gridSizeZ: 0
+  bombDevide: 0
   tileSO: {fileID: 11400000, guid: 476c6ec254a2fa64b8f91d532df56b0e, type: 2}
   safeTileSOs: []
+  bombTileSOs: []
   prefabTile: {fileID: 744185548288267826, guid: 5f2ac913937646a46a3abfe8389e30cf,
     type: 3}
   spawnedTiles: []
@@ -576,8 +578,6 @@ MonoBehaviour:
   - {fileID: 744185548288267826, guid: 5f2ac913937646a46a3abfe8389e30cf, type: 3}
   - {fileID: 744185548288267826, guid: ab2430ad6451e97408c46f48d4cd98f6, type: 3}
   - {fileID: 744185548288267826, guid: 062b557c4ef2b0c44a82b1ae74044709, type: 3}
-  mapSizeX: 10
-  mapSizeZ: 10
 --- !u!4 &1567099828
 Transform:
   m_ObjectHideFlags: 0
@@ -624,6 +624,7 @@ MonoBehaviour:
   tileSprites: []
   gridSizeX: 10
   gridSizeZ: 10
+  bombDevide: 3
 --- !u!4 &1666480628
 Transform:
   m_ObjectHideFlags: 0
