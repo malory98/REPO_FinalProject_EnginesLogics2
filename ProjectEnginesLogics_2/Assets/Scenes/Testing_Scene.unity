@@ -564,6 +564,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7352e967388ddd74185bcc043814b650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  gridSizeX: 0
+  gridSizeZ: 0
+  tileSO: {fileID: 11400000, guid: 476c6ec254a2fa64b8f91d532df56b0e, type: 2}
+  safeTileSOs: []
+  prefabTile: {fileID: 0}
+  spawnedTiles: []
   prefabTiles:
   - {fileID: 744185548288267826, guid: 5f2ac913937646a46a3abfe8389e30cf, type: 3}
   - {fileID: 744185548288267826, guid: ab2430ad6451e97408c46f48d4cd98f6, type: 3}
@@ -614,8 +621,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSprites: []
-  gridSizeX: 0
-  gridSizeZ: 0
+  gridSizeX: 10
+  gridSizeZ: 10
 --- !u!4 &1666480628
 Transform:
   m_ObjectHideFlags: 0
