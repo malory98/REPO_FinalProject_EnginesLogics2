@@ -22,6 +22,8 @@ public class GridManager : MonoBehaviour
     public List<TileSO> bombTileSOs;
     public GameObject prefabTile;
     public List<GameObject> spawnedTiles;
+    // Used for FloodCheck
+    public List<TileSO> checkedTiles;
 
     // Flood Fill Algorithm needed
 
@@ -115,10 +117,25 @@ public class GridManager : MonoBehaviour
     //public bool FloodCheck()
     //{
     //    int randomTileSO = Random.Range(0, safeTileSOs.Count);
-    //    List<TileSO> checkedTiles;
-    //    int bombTiles;
-    //    int safeTiles;
-        
 
+    //    if (safeTileSOs[randomTileSO].coordX == 0
+    //        || safeTileSOs[randomTileSO].coordZ == 0
+    //        || safeTileSOs[randomTileSO].coordX == (gridSizeX - 1)
+    //        || safeTileSOs[randomTileSO].coordZ == (gridSizeZ - 1))
+    //    {
+
+    //    }
+    //    else
+    //    {
+            
+    //    }
+
+    //}
+    //public bool BombCheck(TileSO tile)
+    //{
+    //    if(tile.type == Type.Bomb)
+    //    {
+    //        check
+    //    }
     //}
 }
