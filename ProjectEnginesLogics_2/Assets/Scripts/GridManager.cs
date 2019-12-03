@@ -112,4 +112,13 @@ public class GridManager : MonoBehaviour
             //      chose new randomX & randomZ
         }
     }
+    //public bool FloodCheck()
+    //{
+    //    int randomTileSO = Random.Range(0, safeTileSOs.Count);
+    //    List<TileSO> checkedTiles;
+    //    int bombTiles;
+    //    int safeTiles;
+        
+
+    //}
 }
