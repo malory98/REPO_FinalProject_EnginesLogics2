@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5073984291298374957}
   - component: {fileID: 6934004090034835379}
   - component: {fileID: 8363235749555094568}
-  - component: {fileID: 5743486607868465498}
+  - component: {fileID: 1794728290130787046}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: Tile2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 66558bb56525e3c4c9d5139cc2109074, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,7 +94,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5743486607868465498
+--- !u!114 &1794728290130787046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
