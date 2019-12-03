@@ -569,7 +569,8 @@ MonoBehaviour:
   gridSizeZ: 0
   tileSO: {fileID: 11400000, guid: 476c6ec254a2fa64b8f91d532df56b0e, type: 2}
   safeTileSOs: []
-  prefabTile: {fileID: 0}
+  prefabTile: {fileID: 744185548288267826, guid: 5f2ac913937646a46a3abfe8389e30cf,
+    type: 3}
   spawnedTiles: []
   prefabTiles:
   - {fileID: 744185548288267826, guid: 5f2ac913937646a46a3abfe8389e30cf, type: 3}

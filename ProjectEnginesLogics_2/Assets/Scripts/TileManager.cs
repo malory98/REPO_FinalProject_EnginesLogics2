@@ -52,7 +52,7 @@ public class TileManager : MonoBehaviour
     public void LoadTileSO(TileSO tileSO)
     {
         tileSO.tilePrefab = gameObject;
-        tileSO.adjacentTMP = FindObjectOfType<TextMeshPro>();
+        tileSO.adjacentTMP = FindObjectOfType<TextMeshProUGUI>();
         tileSO.spriteHolder = FindObjectOfType<Image>();
         tileSO.tileSprites = gameManager.tileSprites;
     }

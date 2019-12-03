@@ -16,7 +16,7 @@ public class TileSO : ScriptableObject
     public Type type;
     public GameObject tilePrefab;
     // Will display the number of bombs touching the safe tile
-    public TextMeshPro adjacentTMP;
+    public TextMeshProUGUI adjacentTMP;
     public Image spriteHolder;
     // Will need 3 sprites: Bomb, Unclicked & Marked
     public List<Sprite> tileSprites;

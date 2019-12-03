@@ -66,21 +66,21 @@ public class GridManager : MonoBehaviour
         newSO.coordX = x;
         newSO.coordX = z;
         newSO.tilePrefab = newTile;
-        newSO.spriteHolder = newTile.gameObject.GetComponent<Image>();
-        newSO.adjacentTMP = newTile.gameObject.GetComponent<TextMeshPro>();
+        newSO.spriteHolder = newTile.transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
+        newSO.adjacentTMP = newTile.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         newSO.tileSprites = gameManager.tileSprites;
         // Adds the new SO to a list of tile SOs
         safeTileSOs.Add(newSO);
     }
 
-        public bool IsEdge(int x, int z)
-    {
-        if (z == 0 || x == 0 || z == mapSizeZ - 1 || x == mapSizeX - 1)
-        {
-            return true;
-        }
-        return false;
-    }
+    //    public bool IsEdge(int x, int z)
+    //{
+    //    if (z == 0 || x == 0 || z == mapSizeZ - 1 || x == mapSizeX - 1)
+    //    {
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     public void TellMyLocation(Vector3 tileLocation)
     {

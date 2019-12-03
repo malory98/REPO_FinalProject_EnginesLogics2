@@ -62,7 +62,7 @@ public class RRGridManager : MonoBehaviour   // RAHEEL'S CODE
         newSO.coordX = z;
         newSO.tilePrefab = newTile;
         newSO.spriteHolder = newTile.GetComponent<Image>();
-        newSO.adjacentTMP = newTile.GetComponent<TextMeshPro>();
+        newSO.adjacentTMP = newTile.GetComponent<TextMeshProUGUI>();
         newSO.tileSprites = gameManager.tileSprites;
         // Adds the new SO to a list of tile SOs
         safeTileSOs.Add(newSO);
