@@ -104,15 +104,15 @@ public class GridManager : MonoBehaviour
             tempSO.type = Type.Bomb;
             bombTileSOs.Add(tempSO);
             safeTileSOs.Remove(tempSO);
-            Debug.Log("<color=blue>Flood Check beginning...</color>");
-            floodResult = FloodCheck();
-            Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
-            if (!floodResult)
-            {
-                bombTileSOs.Remove(tempSO);
-                safeTileSOs.Add(tempSO);
-                i--;
-            }
+            //Debug.Log("<color=blue>Flood Check beginning...</color>");
+            //floodResult = FloodCheck();
+            //Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
+            //if (!floodResult)
+            //{
+            //    bombTileSOs.Remove(tempSO);
+            //    safeTileSOs.Add(tempSO);
+            //    i--;
+            //}
         }
     }
 
