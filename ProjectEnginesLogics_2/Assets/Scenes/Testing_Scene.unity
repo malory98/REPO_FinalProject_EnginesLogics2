@@ -564,7 +564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7352e967388ddd74185bcc043814b650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floodCheckTester: {fileID: 0}
+  adjacentBombChecker: {fileID: 0}
+  floodCheck: {fileID: 0}
   gameManager: {fileID: 0}
   gridSizeX: 0
   gridSizeZ: 0
@@ -733,6 +734,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1767809173}
   - component: {fileID: 1767809172}
+  - component: {fileID: 1767809174}
   m_Layer: 0
   m_Name: FloodTester
   m_TagString: Untagged
@@ -772,6 +774,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1767809174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767809171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d43ec812f6fa6b49b2e999d05d80115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridManager: {fileID: 0}
+  safeTileSOs: []
+  bombTileSOs: []
 --- !u!1 &1876694499
 GameObject:
   m_ObjectHideFlags: 0

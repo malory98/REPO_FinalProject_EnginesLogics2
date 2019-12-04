@@ -6,6 +6,7 @@ using TMPro;
 
 public class GridManager : MonoBehaviour
 {
+    public AdjacentBombChecker adjacentBombChecker;
     public FloodCheck floodCheck;
     public GameManager gameManager;
     [SerializeField]
@@ -37,6 +38,7 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        adjacentBombChecker = FindObjectOfType<AdjacentBombChecker>();
         gameManager = FindObjectOfType<GameManager>();
         floodCheck = FindObjectOfType<FloodCheck>();
         gridSizeX = gameManager.gridSizeX;
@@ -51,6 +53,11 @@ public class GridManager : MonoBehaviour
             }
         }
         PlaceBombs();
+        adjacentBombChecker.CheckAdjacentBombs();
+        foreach(TileSO singleTile in safeTileSOs)
+        {
+            singleTile.adjacentTMP.gameObject.SetActive(true);
+        }
         foreach(TileSO singleTile in bombTileSOs)
         {
             singleTile.spriteHolder.color = Color.red;
