@@ -6,7 +6,7 @@ using TMPro;
 
 public class GridManager : MonoBehaviour
 {
-
+    public FloodCheck floodCheck;
     public GameManager gameManager;
     [SerializeField]
     private int gridSizeX;
@@ -38,6 +38,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        floodCheck = FindObjectOfType<FloodCheck>();
         gridSizeX = gameManager.gridSizeX;
         gridSizeZ = gameManager.gridSizeZ;
         bombDevide = gameManager.bombDevide;
@@ -95,7 +96,7 @@ public class GridManager : MonoBehaviour
     // Changes a set number of safe tiles into bomb tiles, using a flood fill algorithm
     public void PlaceBombs()
     {
-        //bool floodResult = new bool();
+        bool floodResult = new bool();
         for (int i = 0; i < ((gridSizeX * gridSizeZ)/bombDevide); i++)
         {
             int randomTileSO = Random.Range(0, safeTileSOs.Count);
@@ -104,15 +105,15 @@ public class GridManager : MonoBehaviour
             tempSO.type = Type.Bomb;
             bombTileSOs.Add(tempSO);
             safeTileSOs.Remove(tempSO);
-            //Debug.Log("<color=blue>Flood Check beginning...</color>");
-            //floodResult = FloodCheck();
-            //Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
-            //if (!floodResult)
-            //{
-            //    bombTileSOs.Remove(tempSO);
-            //    safeTileSOs.Add(tempSO);
-            //    i--;
-            //}
+            Debug.Log("<color=blue>Flood Check beginning...</color>");
+            floodResult = floodCheck.FloodChecker(); ;
+            Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
+            if (!floodResult)
+            {
+                bombTileSOs.Remove(tempSO);
+                safeTileSOs.Add(tempSO);
+                i--;
+            }
         }
     }
 
