@@ -95,7 +95,7 @@ public class GridManager : MonoBehaviour
     // Changes a set number of safe tiles into bomb tiles, using a flood fill algorithm
     public void PlaceBombs()
     {
-        bool floodResult = new bool();
+        //bool floodResult = new bool();
         for (int i = 0; i < ((gridSizeX * gridSizeZ)/bombDevide); i++)
         {
             int randomTileSO = Random.Range(0, safeTileSOs.Count);
