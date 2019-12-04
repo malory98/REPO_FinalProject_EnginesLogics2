@@ -13,7 +13,15 @@ public class FloodCheck : MonoBehaviour
     public List<TileSO> safeTileSOs;
     public List<TileSO> bombTileSOs;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    gameManager = FindObjectOfType<GameManager>();
+    //    gridManager = FindObjectOfType<GridManager>();
+
+    //    gridSizeX = gameManager.gridSizeX;
+    //    gridSizeZ = gameManager.gridSizeZ;
+    //}
+    public void Initialize()
     {
         gameManager = FindObjectOfType<GameManager>();
         gridManager = FindObjectOfType<GridManager>();

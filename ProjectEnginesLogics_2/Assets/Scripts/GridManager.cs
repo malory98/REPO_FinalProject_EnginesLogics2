@@ -52,6 +52,8 @@ public class GridManager : MonoBehaviour
                 SpawnTile(x, z);
             }
         }
+        floodCheck.Initialize();
+        adjacentBombChecker.Initialize();
         PlaceBombs();
         adjacentBombChecker.CheckAdjacentBombs();
         foreach(TileSO singleTile in safeTileSOs)

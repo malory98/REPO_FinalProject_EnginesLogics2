@@ -9,7 +9,11 @@ public class AdjacentBombChecker : MonoBehaviour
     public List<TileSO> safeTileSOs;
     public List<TileSO> bombTileSOs;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    gridManager = FindObjectOfType<GridManager>();
+    //}
+    public void Initialize()
     {
         gridManager = FindObjectOfType<GridManager>();
     }
