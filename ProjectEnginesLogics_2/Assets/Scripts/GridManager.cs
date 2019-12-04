@@ -22,10 +22,6 @@ public class GridManager : MonoBehaviour
     public List<TileSO> bombTileSOs;
     public GameObject prefabTile;
     public List<GameObject> spawnedTiles;
-    // Used for FloodCheck
-    public List<TileSO> checkedTiles;
-
-    // Flood Fill Algorithm needed
 
 
     // STARTS RAHEEL'S PART
@@ -96,8 +92,10 @@ public class GridManager : MonoBehaviour
         print(" ------ >" + tileLocation);
     }
 
+    // Changes a set number of safe tiles into bomb tiles, using a flood fill algorithm
     public void PlaceBombs()
     {
+        bool floodResult = new bool();
         for (int i = 0; i < ((gridSizeX * gridSizeZ)/bombDevide); i++)
         {
             int randomTileSO = Random.Range(0, safeTileSOs.Count);
@@ -106,264 +104,298 @@ public class GridManager : MonoBehaviour
             tempSO.type = Type.Bomb;
             bombTileSOs.Add(tempSO);
             safeTileSOs.Remove(tempSO);
-            //if(FloodCheck() ==  false)
-            //{
-            //    bombTileSOs.Remove(tempSO);
-            //    safeTileSOs.Add(tempSO);
-            //    i--;
-            //}
+            Debug.Log("<color=blue>Flood Check beginning...</color>");
+            floodResult = FloodCheck();
+            Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
+            if (!floodResult)
+            {
+                bombTileSOs.Remove(tempSO);
+                safeTileSOs.Add(tempSO);
+                i--;
+            }
         }
     }
-    //public bool FloodCheck()
-    //{
-    //    TileSO tempSO = new TileSO();
-    //    int randomTileSO = Random.Range(0, safeTileSOs.Count);
-    //    int tempX;
-    //    int tempZ;
-    //    tempSO = safeTileSOs[randomTileSO];
-    //    List<TileSO> tileQueue = new List<TileSO>();
-    //    tileQueue.Add(tempSO);
-    //    while(tileQueue.Count > 0)
-    //    {
-    //        tempSO = tileQueue[0];
-    //        for (int x = -1; x <= 1; x++)
-    //        {
-    //            for (int z = -1; z <= 1; z++)
-    //            {
-    //                tempX = tempSO.coordX + x;
-    //                tempZ = tempSO.coordZ + z;
-    //                if (tempX > -1 && tempX < gridSizeX && tempZ > -1 && tempZ < gridSizeZ)
-    //                {
-    //                    foreach (TileSO singleTile in safeTileSOs)
-    //                    {
-    //                        bool isChecked = new bool();
-    //                        isChecked = false;
-    //                        if (singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //                        {
-    //                            foreach (TileSO checkedTile in checkedTiles)
-    //                            {
-    //                                if (checkedTile == singleTile)
-    //                                {
-    //                                    isChecked = true;
-    //                                }
-    //                            }
-    //                            if (!isChecked)
-    //                            {
-    //                                tileQueue.Add(singleTile);
-    //                            }
-    //                        }
-    //                    }
-    //                    foreach (TileSO singleTile in bombTileSOs)
-    //                    {
-    //                        bool isChecked = new bool();
-    //                        isChecked = false;
-    //                        if (singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //                        {
-    //                            foreach (TileSO checkedTile in checkedTiles)
-    //                            {
-    //                                if (checkedTile == singleTile)
-    //                                {
-    //                                    isChecked = true;
-    //                                }
-    //                            }
-    //                            if (!isChecked)
-    //                            {
-    //                                checkedTiles.Add(singleTile);
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        checkedTiles.Add(tempSO);
-    //        tileQueue.Remove(tempSO);
-    //    }
-    //    if(checkedTiles.Count == (gridSizeX*gridSizeZ))
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //    // Pre-Optimized
-    //    //tempX = tempSO.coordX + -1;
-    //    //tempZ = tempSO.coordZ + -1;
-    //    //if (tempX > -1 || tempZ > -1)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + 0;
-    //    //tempZ = tempSO.coordZ + -1;
-    //    //if (tempZ > -1)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + 1;
-    //    //tempZ = tempSO.coordZ + -1;
-    //    //if (tempX < gridSizeX && tempZ > -1)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + -1;
-    //    //tempZ = tempSO.coordZ + 0;
-    //    //if (tempX > -1)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + 1;
-    //    //tempZ = tempSO.coordZ + 0;
-    //    //if (tempX < gridSizeX)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + -1;
-    //    //tempZ = tempSO.coordZ + 1;
-    //    //if (tempX > -1 && tempZ < gridSizeZ)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + 0;
-    //    //tempZ = tempSO.coordZ + 1;
-    //    //if (tempZ < gridSizeZ)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //    //tempX = tempSO.coordX + 1;
-    //    //tempZ = tempSO.coordZ + 1;
-    //    //if (tempX < gridSizeX && tempZ < gridSizeZ)
-    //    //{
-    //    //    foreach (TileSO singleTile in safeTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //            Flood(singleTile);
-    //    //        }
-    //    //    }
-    //    //    foreach (TileSO singleTile in bombTileSOs)
-    //    //    {
-    //    //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
-    //    //            && singleTile.isChecked == false)
-    //    //        {
-    //    //            singleTile.isChecked = true;
-    //    //        }
-    //    //    }
-    //    //}
-    //}
+
+    // Flood fill algorithm that makes sure every tile on the game map will be accessable
+    // from one to the other
+    public bool FloodCheck()
+    {
+        List<TileSO> tileQueue = new List<TileSO>();
+        List<TileSO> checkedTiles = new List<TileSO>();
+        TileSO tempSO = new TileSO();
+        int tempX;
+        int tempZ;
+        int randomTileSO = Random.Range(0, safeTileSOs.Count);
+        tempSO = safeTileSOs[randomTileSO];
+        checkedTiles.Add(tempSO);
+        tileQueue.Add(tempSO);
+        Debug.Log("<color=green>New SO added, TileSOs in queue:</color><color=cyan> " + tileQueue.Count
+            + "</color>");
+        while (tileQueue.Count > 0)
+        {
+            //foreach(TileSO checkedTile in checkedTiles)
+            //{
+            //    int timesAppeared = new int();
+            //    foreach (TileSO recheckedTiles in checkedTiles)
+            //    {
+            //        if (checkedTile == recheckedTiles)
+            //        {
+            //            timesAppeared++;
+            //        }
+            //    }
+            //    if (timesAppeared > 1)
+            //    {
+            //        checkedTiles.Remove(checkedTile);
+            //    }
+            //}
+            tempSO = tileQueue[0];
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    tempX = tempSO.coordX + x;
+                    tempZ = tempSO.coordZ + z;
+                    if ((tempX >= 0 && tempX < gridSizeX) && (tempZ >= 0 && tempZ < gridSizeZ) &&
+                        (x != 0 && z != 0))
+                    {
+                        foreach (TileSO singleTile in safeTileSOs)
+                        {
+                            bool isChecked = new bool();
+                            isChecked = false;
+                            if (singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+                            {
+                                foreach (TileSO checkedTile in checkedTiles)
+                                {
+                                    if (checkedTile == singleTile)
+                                    {
+                                        isChecked = true;
+                                    }
+                                }
+                                if (!isChecked)
+                                {
+                                    tileQueue.Add(singleTile);
+                                    Debug.Log("<color=green>New SO added, TileSOs in queue:</color><color=cyan> " + tileQueue.Count
+                                           + "</color>");
+                                    checkedTiles.Add(singleTile);
+                                }
+                            }
+                        }
+                        foreach (TileSO singleTile in bombTileSOs)
+                        {
+                            bool isChecked = new bool();
+                            isChecked = false;
+                            if (singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+                            {
+                                foreach (TileSO checkedTile in checkedTiles)
+                                {
+                                    if (checkedTile == singleTile)
+                                    {
+                                        isChecked = true;
+                                    }
+                                }
+                                if (!isChecked)
+                                {
+                                    checkedTiles.Add(singleTile);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            tileQueue.Remove(tempSO);
+            Debug.Log("<color=red>SO removed, TileSOs in queue:</color><color=magenta> " + tileQueue.Count
+            + "</color>");
+        }
+        // If there are less tileSOs in the checkedTiles then there are total tiles in the grid
+        // return false
+        if (checkedTiles.Count < (gridSizeX * gridSizeZ))
+        {
+            Debug.Log(checkedTiles.Count);
+            return false;
+        }
+        else
+        {
+            Debug.Log(checkedTiles.Count);
+            return true;
+        }
+        // Pre-Optimized attempt at algorithm
+        //tempX = tempSO.coordX + -1;
+        //tempZ = tempSO.coordZ + -1;
+        //if (tempX > -1 || tempZ > -1)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + 0;
+        //tempZ = tempSO.coordZ + -1;
+        //if (tempZ > -1)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + 1;
+        //tempZ = tempSO.coordZ + -1;
+        //if (tempX < gridSizeX && tempZ > -1)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + -1;
+        //tempZ = tempSO.coordZ + 0;
+        //if (tempX > -1)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + 1;
+        //tempZ = tempSO.coordZ + 0;
+        //if (tempX < gridSizeX)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + -1;
+        //tempZ = tempSO.coordZ + 1;
+        //if (tempX > -1 && tempZ < gridSizeZ)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + 0;
+        //tempZ = tempSO.coordZ + 1;
+        //if (tempZ < gridSizeZ)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+        //tempX = tempSO.coordX + 1;
+        //tempZ = tempSO.coordZ + 1;
+        //if (tempX < gridSizeX && tempZ < gridSizeZ)
+        //{
+        //    foreach (TileSO singleTile in safeTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //            Flood(singleTile);
+        //        }
+        //    }
+        //    foreach (TileSO singleTile in bombTileSOs)
+        //    {
+        //        if ((singleTile.coordX == tempX && singleTile.coordZ == tempZ)
+        //            && singleTile.isChecked == false)
+        //        {
+        //            singleTile.isChecked = true;
+        //        }
+        //    }
+        //}
+    }
     //Might use but maybe not
     //public bool BombCheck(TileSO tile)
     //{
