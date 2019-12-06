@@ -9,4 +9,10 @@ public class GameManager : MonoBehaviour
     public int gridSizeZ;
     public int bombDevide;
 
+    public void ExitGame()
+    {
+        Debug.Log("Exiting the game");
+        Application.Quit();
+    }
+
 }

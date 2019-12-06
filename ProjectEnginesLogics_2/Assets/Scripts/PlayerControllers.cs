@@ -13,7 +13,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     private void Start()
     {
         tileLoc = FindObjectOfType<TileLocation>();
-        gridMG = FindObjectOfType<GridManager>();
+        //gridMG = FindObjectOfType<GridManager>();
     }
 
     private void Update()
@@ -22,8 +22,16 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         LeftClick();
     }
 
+    private void Initialize()
+    {
+        //tileLoc = FindObjectOfType<TileLocation>();
+        gridMG = FindObjectOfType<GridManager>();
+    }
+
     public void RightClick()   // ONLY MARKING / No revealing the tiles
     {
+        Initialize();
+
         if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit = new RaycastHit();
@@ -45,6 +53,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     {
                         if (tile.isClicked == false)
                         {
+                            Debug.Log("Right c");
                             if (tile.isMarked == false)
                             {
                                 tile.isMarked = true;
@@ -68,14 +77,34 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     public void LeftClick()   // NO MARKING / just revealing tiles
     {
+        Initialize();
+
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (TileSO tile in gridMG.safeTileSOs)
+            RaycastHit hit = new RaycastHit();
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
+                || !(hit.collider == null)))
             {
-                if (tile.isMarked == false)
+                if (hit.collider.gameObject.tag == "Tile")
                 {
-                    tile.spriteHolder.gameObject.SetActive(false);
-                    tile.adjacentTMP.gameObject.SetActive(true);
+                    TileLocation tileLoc = hit.collider.gameObject.GetComponent<TileLocation>();
+                    // in case there is a problem, try using GetComponentInParent<TileLocation>
+                    print(tileLoc.locationX.ToString() + ", " + tileLoc.locationZ.ToString());
+                    thisTileLocationX = tileLoc.locationX;
+                    thisTileLocationZ = tileLoc.locationZ;
+                }
+
+                foreach (TileSO tile in gridMG.safeTileSOs)
+                {
+                    if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
+                    {
+                        if (tile.isMarked == false)
+                        {
+                            tile.spriteHolder.gameObject.SetActive(false); 
+                            tile.adjacentTMP.gameObject.SetActive(true);  
+                            Debug.Log("Left click");
+                        }
+                    }
                 }
             }
         }
