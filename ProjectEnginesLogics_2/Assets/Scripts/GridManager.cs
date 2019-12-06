@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     // (gridSizeX*gridSizeZ)/bombDevide=totalBombs
     [SerializeField]
     private int bombDevide;
+    private int numberOfBombs;
 
     public TileSO tileSO;
     public List<TileSO> safeTileSOs;
@@ -45,6 +46,7 @@ public class GridManager : MonoBehaviour
         gridSizeZ = gameManager.gridSizeZ;
         bombDevide = gameManager.bombDevide;
         Grid = new int[gridSizeX, gridSizeZ];
+        numberOfBombs = ((gridSizeX * gridSizeZ) / bombDevide);
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int z = 0; z < gridSizeZ; z++)
@@ -54,6 +56,7 @@ public class GridManager : MonoBehaviour
         }
         floodCheck.Initialize();
         adjacentBombChecker.Initialize();
+        floodCheck.NeighbourAssigner();
         PlaceBombs();
         adjacentBombChecker.CheckAdjacentBombs();
         foreach(TileSO singleTile in safeTileSOs)
@@ -105,8 +108,9 @@ public class GridManager : MonoBehaviour
     // Changes a set number of safe tiles into bomb tiles, using a flood fill algorithm
     public void PlaceBombs()
     {
+        int strikes = new int();
         bool floodResult = new bool();
-        for (int i = 0; i < ((gridSizeX * gridSizeZ)/bombDevide); i++)
+        for (int i = 0; i < numberOfBombs; i++)
         {
             int randomTileSO = Random.Range(0, safeTileSOs.Count);
             TileSO tempSO = new TileSO();
@@ -115,13 +119,22 @@ public class GridManager : MonoBehaviour
             bombTileSOs.Add(tempSO);
             safeTileSOs.Remove(tempSO);
             Debug.Log("<color=blue>Flood Check beginning...</color>");
-            floodResult = floodCheck.FloodChecker(); ;
+            floodResult = floodCheck.FloodChecker();
             Debug.Log("<color=orange>FloodCheck findished and returned</color> " + floodResult);
             if (!floodResult)
             {
                 bombTileSOs.Remove(tempSO);
                 safeTileSOs.Add(tempSO);
                 i--;
+                strikes++;
+                if (strikes > 5)
+                {
+                    numberOfBombs--;
+                }
+            }
+            if(floodResult)
+            {
+                strikes = 0;
             }
         }
     }

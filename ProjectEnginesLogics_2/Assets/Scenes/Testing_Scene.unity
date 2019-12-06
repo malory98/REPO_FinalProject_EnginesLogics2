@@ -735,6 +735,7 @@ GameObject:
   - component: {fileID: 1767809173}
   - component: {fileID: 1767809172}
   - component: {fileID: 1767809174}
+  - component: {fileID: 1767809175}
   m_Layer: 0
   m_Name: FloodTester
   m_TagString: Untagged
@@ -787,6 +788,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 0}
+  safeTileSOs: []
+  bombTileSOs: []
+--- !u!114 &1767809175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767809171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b1e2933ed8e8348a414cc146bed73a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+  gridManager: {fileID: 0}
+  gridSizeX: 0
+  gridSizeZ: 0
   safeTileSOs: []
   bombTileSOs: []
 --- !u!1 &1876694499

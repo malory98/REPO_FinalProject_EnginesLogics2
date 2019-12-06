@@ -20,6 +20,7 @@ public class TileSO : ScriptableObject
     public Image spriteHolder;
     // Will need 3 sprites: Bomb, Unclicked & Marked
     public List<Sprite> tileSprites;
+    public List<TileSO> neighbours;
     public int numOfAdjacent;
     //Tiles X and Z coordanates
     public int coordX;
