@@ -38,25 +38,28 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     thisTileLocationX = tileLoc.locationX;
                     thisTileLocationZ = tileLoc.locationZ;
                 }
-            }
 
-            foreach (TileSO safeTile in gridMG.safeTileSOs)
-            {
-                if (safeTile.coordX == thisTileLocationX && safeTile.coordZ == thisTileLocationZ)
+                foreach (TileSO tile in gridMG.safeTileSOs)
                 {
-                    if (safeTile.isClicked == false)
+                    if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
                     {
-                        if (safeTile.isMarked == false)
+                        if (tile.isClicked == false)
                         {
-                            safeTile.isMarked = true;
-                            safeTile.spriteHolder.sprite = safeTile.tileSprites[1];  // Change Sprite to the Marked Sprite
-                        } else if(safeTile.isMarked == true)
-                        {
-                            safeTile.spriteHolder.sprite = safeTile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
+                            if (tile.isMarked == false)
+                            {
+                                tile.isMarked = true;
+                                tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
+                                Debug.Log("cheguei");
+                            }
+                            else if (tile.isMarked == true)
+                            {
+                                tile.spriteHolder.sprite = tile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
+                                Debug.Log("tb cheg");
+                            }
                         }
                     }
-                }
 
+                }
             }
             
 
@@ -67,12 +70,12 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         if (Input.GetMouseButtonDown(0))
         {
-            foreach (TileSO safeTile in gridMG.safeTileSOs)
+            foreach (TileSO tile in gridMG.safeTileSOs)
             {
-                if (safeTile.isMarked == false)
+                if (tile.isMarked == false)
                 {
-                    safeTile.spriteHolder.gameObject.SetActive(false);
-                    safeTile.adjacentTMP.gameObject.SetActive(true);
+                    tile.spriteHolder.gameObject.SetActive(false);
+                    tile.adjacentTMP.gameObject.SetActive(true);
                 }
             }
         }
