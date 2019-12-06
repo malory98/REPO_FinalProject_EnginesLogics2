@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 {
     TileLocation tileLoc;
-    int tileLocationX;
-    int tileLocationZ;
+    int thisTileLocationX;
+    int thisTileLocationZ;
 
     GridManager gridMG;
 
@@ -26,17 +26,6 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         if (Input.GetMouseButtonDown(1))
         {
-            /*Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            tileLocationX = tileLoc.locationX;
-            tileLocationZ = tileLoc.locationZ;
-
-            Debug.Log("RIGHT CLICK: " + tileLocationX + ", " + tileLocationZ);
-
-            foreach (TileSO tile in gridMG.safeTileSOs)
-            {
-                
-            }*/
-
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
                 || !(hit.collider == null)))
@@ -46,9 +35,31 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     TileLocation tileLoc = hit.collider.gameObject.GetComponent<TileLocation>();
                     // in case there is a problem, try using GetComponentInParent<TileLocation>
                     print(tileLoc.locationX.ToString() + ", " + tileLoc.locationZ.ToString());
+                    thisTileLocationX = tileLoc.locationX;
+                    thisTileLocationZ = tileLoc.locationZ;
+                }
+            }
+
+            foreach (TileSO safeTile in gridMG.safeTileSOs)
+            {
+                if (safeTile.coordX == thisTileLocationX && safeTile.coordZ == thisTileLocationZ)
+                {
+                    if (safeTile.isClicked == false)
+                    {
+                        if (safeTile.isMarked == false)
+                        {
+                            safeTile.isMarked = true;
+                            safeTile.spriteHolder.sprite = safeTile.tileSprites[1];  // Change Sprite to the Marked Sprite
+                        } else if(safeTile.isMarked == true)
+                        {
+                            safeTile.spriteHolder.sprite = safeTile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
+                        }
+                    }
                 }
 
             }
+            
+
         }
     }
 
@@ -56,7 +67,14 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         if (Input.GetMouseButtonDown(0))
         {
-
+            foreach (TileSO safeTile in gridMG.safeTileSOs)
+            {
+                if (safeTile.isMarked == false)
+                {
+                    safeTile.spriteHolder.gameObject.SetActive(false);
+                    safeTile.adjacentTMP.gameObject.SetActive(true);
+                }
+            }
         }
     }
 
