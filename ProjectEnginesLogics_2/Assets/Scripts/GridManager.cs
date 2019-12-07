@@ -59,14 +59,15 @@ public class GridManager : MonoBehaviour
         floodCheck.NeighbourAssigner();
         PlaceBombs();
         adjacentBombChecker.CheckAdjacentBombs();
-        foreach(TileSO singleTile in safeTileSOs)
-        {
-            singleTile.adjacentTMP.gameObject.SetActive(true);
-        }
         foreach(TileSO singleTile in bombTileSOs)
         {
-            singleTile.spriteHolder.color = Color.red;
             singleTile.spriteHolder.gameObject.SetActive(true);
+            singleTile.spriteHolder.sprite = singleTile.tileSprites[0];
+        }
+        foreach(TileSO singleTile in safeTileSOs)
+        {
+            singleTile.spriteHolder.gameObject.SetActive(true);
+            singleTile.spriteHolder.sprite = singleTile.tileSprites[0];
         }
         // This was for testing purposes
         //foreach (TileSO singleSO in safeTileSOs)
