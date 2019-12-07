@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 {
@@ -10,16 +12,23 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     GridManager gridMG;
 
+    [SerializeField]
+    private int bombsCount;
+
+    public TextMeshProUGUI bombText;
+
     private void Start()
     {
         tileLoc = FindObjectOfType<TileLocation>();
         //gridMG = FindObjectOfType<GridManager>();
+        bombsCount = 10;  // place-holder number
     }
 
     private void Update()
     {
         RightClick();
         LeftClick();
+        bombText.text = bombsCount.ToString();
     }
 
     private void Initialize()
@@ -53,15 +62,16 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     {
                         if (tile.isClicked == false)
                         {
-                            Debug.Log("Right c");
                             if (tile.isMarked == false)
                             {
                                 tile.isMarked = true;
                                 tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
+                                bombsCount--;  // count down the number of Bombs
                             }
                             else if (tile.isMarked == true)
                             {
                                 tile.spriteHolder.sprite = tile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
+                                bombsCount++; // count up the bombs;
                             }
                         }
                     }
