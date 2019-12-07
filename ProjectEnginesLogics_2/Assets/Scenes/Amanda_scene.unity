@@ -149,7 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95996fd4b36dc0e47befcee87565c86f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSprites: []
+  tileSprites:
+  - {fileID: 21300000, guid: 4c49d304b9c39c944854f04a744910be, type: 3}
+  - {fileID: 21300000, guid: ede45f9ba25ec654ab58418cc78a01d3, type: 3}
+  - {fileID: 21300000, guid: 96d28eddaa806704794e16a29a19e72c, type: 3}
   gridSizeX: 10
   gridSizeZ: 10
   bombDevide: 3

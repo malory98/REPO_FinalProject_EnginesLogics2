@@ -58,12 +58,10 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                             {
                                 tile.isMarked = true;
                                 tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
-                                Debug.Log("cheguei");
                             }
                             else if (tile.isMarked == true)
                             {
                                 tile.spriteHolder.sprite = tile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
-                                Debug.Log("tb cheg");
                             }
                         }
                     }
