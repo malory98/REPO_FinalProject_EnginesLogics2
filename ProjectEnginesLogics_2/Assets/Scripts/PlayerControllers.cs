@@ -17,11 +17,15 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     public TextMeshProUGUI bombText;
 
+    [SerializeField]
+    public bool paused;
+
     private void Start()
     {
         tileLoc = FindObjectOfType<TileLocation>();
         //gridMG = FindObjectOfType<GridManager>();
         bombsCount = 10;  // place-holder number
+        paused = FindObjectOfType<GameManager>().isPaused;
     }
 
     private void Update()
@@ -41,7 +45,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         Initialize();
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && paused == false)  // getting Mouse input AND CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -87,7 +91,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         Initialize();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && paused == false)  // CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
