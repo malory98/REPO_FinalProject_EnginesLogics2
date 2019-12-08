@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     public List<Sprite> tileSprites;
     public int gridSizeX;
     public int gridSizeZ;
-    public int bombDevide;
+    public int numberOfBombs;
+    //public int bombDevide;
 
     public bool isPaused = false;
 

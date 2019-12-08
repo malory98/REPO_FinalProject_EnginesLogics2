@@ -15,6 +15,12 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     [SerializeField]
     private int bombsCount;
 
+    // Used to check if win condition
+    [SerializeField]
+    private int bombsMarked;
+
+    public bool isGameOver;
+
     public TextMeshProUGUI bombText;
 
     [SerializeField]
@@ -24,8 +30,9 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         tileLoc = FindObjectOfType<TileLocation>();
         //gridMG = FindObjectOfType<GridManager>();
-        bombsCount = 10;  // place-holder number
+        //bombsCount = 10;  // place-holder number
         paused = FindObjectOfType<GameManager>().isPaused;
+        isGameOver = false;
     }
 
     private void Update()
@@ -35,17 +42,20 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         bombText.text = bombsCount.ToString();
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         //tileLoc = FindObjectOfType<TileLocation>();
         gridMG = FindObjectOfType<GridManager>();
+        // Gets number of bombs from GameManager
+        bombsCount = gridMG.bombTileSOs.Count;
     }
 
     public void RightClick()   // ONLY MARKING / No revealing the tiles
     {
-        Initialize();
+        // I set it to initialize after the bombs render in the gridmanager
+        //Initialize();
 
-        if (Input.GetMouseButtonDown(1) && paused == false)  // getting Mouse input AND CHECKING is the game is not paused
+        if (Input.GetMouseButtonDown(1) && paused == false && isGameOver == false)  // getting Mouse input AND CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -60,38 +70,49 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     thisTileLocationZ = tileLoc.locationZ;
                 }
 
-                foreach (TileSO tile in gridMG.safeTileSOs)
+                foreach (TileSO tile in gridMG.allTileSOs)
                 {
                     if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
                     {
-                        if (tile.isClicked == false)
+                        if (tile.isClicked == false && tile.isMarked == false)
                         {
-                            if (tile.isMarked == false)
+                            tile.isMarked = true; // Tile's isMarked state changes to prevent accidental missclicks
+                            tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
+                            bombsCount--;  // count down the number of Bombs
+                            // If the tile clicked was a bomb
+                            if(tile.type == Type.Bomb)
                             {
-                                tile.isMarked = true;
-                                tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
-                                bombsCount--;  // count down the number of Bombs
+                                // Adds to the total bombs marked
+                                bombsMarked++;
+                                if(bombsMarked == gridMG.bombTileSOs.Count)
+                                {
+                                    // Player wins
+                                    StartCoroutine(WinAnim());
+                                    isGameOver = true;
+                                }
                             }
-                            else if (tile.isMarked == true)
+                        }
+                        else if (tile.isClicked == false && tile.isMarked == true)
+                        {
+                            tile.isMarked = false; // Tile's isMarked bool is back to default state
+                            tile.spriteHolder.sprite = tile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
+                            bombsCount++; // count up the bombs;
+                            if(tile.type == Type.Bomb)
                             {
-                                tile.spriteHolder.sprite = tile.tileSprites[0];  // Change Sprite to the UNmarked Sprite
-                                bombsCount++; // count up the bombs;
+                                bombsCount--;
                             }
                         }
                     }
-
                 }
             }
-            
-
         }
     }
 
     public void LeftClick()   // NO MARKING / just revealing tiles
     {
-        Initialize();
+        //Initialize();
 
-        if (Input.GetMouseButtonDown(0) && paused == false)  // CHECKING is the game is not paused
+        if (Input.GetMouseButtonDown(0) && paused == false && isGameOver == false)  // CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -106,15 +127,29 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     thisTileLocationZ = tileLoc.locationZ;
                 }
 
-                foreach (TileSO tile in gridMG.safeTileSOs)
+                foreach (TileSO tile in gridMG.allTileSOs)
                 {
                     if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
                     {
-                        if (tile.isMarked == false)
+                        // If a safe tile is left clicked
+                        if (tile.isMarked == false && tile.type == Type.Safe)
                         {
                             tile.spriteHolder.gameObject.SetActive(false); 
-                            tile.adjacentTMP.gameObject.SetActive(true);  
+                            tile.adjacentTMP.gameObject.SetActive(true);
+                            // Sets isClicked to true
+                            tile.isClicked = true;
                             Debug.Log("Left click");
+                            // If the tile isn't adjacent to any bombTiles burst revealing all adjacent tiles
+                            if(tile.numOfAdjacent == 0)
+                            {
+                                StartCoroutine(BurstDelay(tile));
+                            }
+                        }
+                        else if (tile.isMarked == false && tile.type == Type.Bomb)
+                        {
+                            StartCoroutine(GameOverAnim());
+                            // GAME OVER
+                            isGameOver = true;
                         }
                     }
                 }
@@ -122,4 +157,59 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         }
     }
 
+    // Used for safe tiles that have 0 adjacent bombs
+    public void ZeroBurst(TileSO zeroTile)
+    {
+        foreach (TileSO neighbour in zeroTile.neighbours)
+        {
+            if (neighbour.isClicked == false && neighbour.isMarked == false)
+            {
+                // Remove sprite and show number of adjacent bombs
+                neighbour.isClicked = true;
+                neighbour.spriteHolder.gameObject.SetActive(false);
+                neighbour.adjacentTMP.text = neighbour.numOfAdjacent.ToString();
+                neighbour.adjacentTMP.gameObject.SetActive(true);
+                // If adjacent is 0, burst again
+                if(neighbour.numOfAdjacent == 0)
+                {
+                    StartCoroutine(BurstDelay(neighbour));
+                }
+
+            }
+        }
+    }
+
+    // Delay for ZeroBurst to make it look cool
+    public IEnumerator BurstDelay(TileSO tile)
+    {
+        yield return new WaitForSeconds(0.05f);
+        ZeroBurst(tile);
+    }
+
+    // Delay animation for Game Over
+    public IEnumerator GameOverAnim()
+    {
+        foreach (TileSO bomb in gridMG.bombTileSOs)
+        {
+            yield return new WaitForSeconds(0.05f);
+            bomb.spriteHolder.sprite = bomb.tileSprites[2];
+        }
+        foreach (TileSO bomb in gridMG.bombTileSOs)
+        {
+            yield return new WaitForSeconds(0.05f);
+            bomb.spriteHolder.color = Color.red;
+        }
+
+    }    
+    
+    // Delay animation for Win
+    public IEnumerator WinAnim()
+    {
+        foreach (TileSO bomb in gridMG.bombTileSOs)
+        {
+            yield return new WaitForSeconds(0.05f);
+            bomb.spriteHolder.color = Color.green;
+        }
+
+    }
 }
