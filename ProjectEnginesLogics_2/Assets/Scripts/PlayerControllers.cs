@@ -24,14 +24,18 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     public TextMeshProUGUI bombText;
 
     [SerializeField]
-    public bool paused;
+    GameManager gmMg;
+
+    public GameObject inGamePanel;
+    public GameObject victoryPanel;
+    public GameObject losePanel;
 
     private void Start()
     {
         tileLoc = FindObjectOfType<TileLocation>();
         //gridMG = FindObjectOfType<GridManager>();
         //bombsCount = 10;  // place-holder number
-        paused = FindObjectOfType<GameManager>().isPaused;
+        gmMg = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -55,7 +59,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         // I set it to initialize after the bombs render in the gridmanager
         //Initialize();
 
-        if (Input.GetMouseButtonDown(1) && paused == false && isGameOver == false)  // getting Mouse input AND CHECKING is the game is not paused
+        if (Input.GetMouseButtonDown(1) && gmMg.isPaused == false && isGameOver == false)  // getting Mouse input AND CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -89,6 +93,9 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                                     // Player wins
                                     StartCoroutine(WinAnim());
                                     isGameOver = true;
+                                    StartCoroutine(PanelWaiting());
+                                    inGamePanel.SetActive(false);
+                                    victoryPanel.SetActive(true);
                                 }
                             }
                         }
@@ -112,7 +119,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
     {
         //Initialize();
 
-        if (Input.GetMouseButtonDown(0) && paused == false && isGameOver == false)  // CHECKING is the game is not paused
+        if (Input.GetMouseButtonDown(0) && gmMg.isPaused == false && isGameOver == false)  // CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -147,9 +154,12 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                         }
                         else if (tile.isMarked == false && tile.type == Type.Bomb)
                         {
-                            StartCoroutine(GameOverAnim());
+                            StartCoroutine(GameOverAnim());  // Player loses
                             // GAME OVER
                             isGameOver = true;
+                            StartCoroutine(PanelWaiting());
+                            inGamePanel.SetActive(false);
+                            losePanel.SetActive(true);
                         }
                     }
                 }
@@ -210,6 +220,13 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
             yield return new WaitForSeconds(0.05f);
             bomb.spriteHolder.color = Color.green;
         }
+
+    }
+
+    // Delay to show up Panels
+    public IEnumerator PanelWaiting()
+    {
+          yield return new WaitForSeconds(50.0f);
 
     }
 }

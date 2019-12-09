@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameReset : MonoBehaviour
 {
+    
     public GridManager gridManager;
 
     public void Initialize()
     {
-        gridManager = FindObjectOfType<GridManager>();
+        gridManager = GetComponent<GridManager>();
     }
 
     public void Reset()
