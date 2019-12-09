@@ -62,7 +62,6 @@ public class GridManager : MonoBehaviour
             }
         }
         // Initialize date for use in other scripts
-        gameReset.Initialize();
         floodCheck.Initialize();
         adjacentBombChecker.Initialize();
         // Each tile knows their neighbors
