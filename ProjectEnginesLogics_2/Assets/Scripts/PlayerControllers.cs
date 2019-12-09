@@ -32,7 +32,6 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         //gridMG = FindObjectOfType<GridManager>();
         //bombsCount = 10;  // place-holder number
         paused = FindObjectOfType<GameManager>().isPaused;
-        isGameOver = false;
     }
 
     private void Update()
@@ -44,6 +43,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     public void Initialize()
     {
+        isGameOver = false;
         //tileLoc = FindObjectOfType<TileLocation>();
         gridMG = FindObjectOfType<GridManager>();
         // Gets number of bombs from GameManager

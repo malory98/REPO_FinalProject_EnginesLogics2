@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
     public FloodCheck floodCheck;
     public GameManager gameManager;
     public PlayerControllers playerControllers;
+    public GameReset gameReset;
     [SerializeField]
     private int gridSizeX;
     [SerializeField]
@@ -39,9 +40,10 @@ public class GridManager : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    public void Build()
     {
         // Fetches other scripts for 
+        gameReset = FindObjectOfType<GameReset>();
         adjacentBombChecker = FindObjectOfType<AdjacentBombChecker>();
         gameManager = FindObjectOfType<GameManager>();
         floodCheck = FindObjectOfType<FloodCheck>();
@@ -60,6 +62,7 @@ public class GridManager : MonoBehaviour
             }
         }
         // Initialize date for use in other scripts
+        gameReset.Initialize();
         floodCheck.Initialize();
         adjacentBombChecker.Initialize();
         // Each tile knows their neighbors
