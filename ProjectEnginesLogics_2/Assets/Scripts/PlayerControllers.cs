@@ -93,7 +93,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                                     // Player wins
                                     StartCoroutine(WinAnim());
                                     isGameOver = true;
-                                    StartCoroutine(PanelWaiting());
+                                    //StartCoroutine(PanelWaiting());
                                     // Moved into coroutine
                                     //inGamePanel.SetActive(false);
                                     //victoryPanel.SetActive(true);
@@ -214,7 +214,6 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         yield return new WaitForSeconds(1);
         inGamePanel.SetActive(false);
         losePanel.SetActive(true);
-
     }
 
     // Delay animation for Win
@@ -230,10 +229,9 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         victoryPanel.SetActive(true);
     }
 
-    // Delay to show up Panels
-    public IEnumerator PanelWaiting()
-    {
-          yield return new WaitForSeconds(50.0f);
-          
-    }
+    //// Delay to show up Panels
+    //public IEnumerator PanelWaiting()
+    //{
+    //      yield return new WaitForSeconds(50.0f);    
+    //}
 }
