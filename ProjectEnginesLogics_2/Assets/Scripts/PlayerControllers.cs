@@ -94,8 +94,9 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                                     StartCoroutine(WinAnim());
                                     isGameOver = true;
                                     StartCoroutine(PanelWaiting());
-                                    inGamePanel.SetActive(false);
-                                    victoryPanel.SetActive(true);
+                                    // Moved into coroutine
+                                    //inGamePanel.SetActive(false);
+                                    //victoryPanel.SetActive(true);
                                 }
                             }
                         }
@@ -157,9 +158,10 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                             StartCoroutine(GameOverAnim());  // Player loses
                             // GAME OVER
                             isGameOver = true;
-                            StartCoroutine(PanelWaiting());
-                            inGamePanel.SetActive(false);
-                            losePanel.SetActive(true);
+                            // Moved into the coroutine
+                            //StartCoroutine(PanelWaiting());
+                            //inGamePanel.SetActive(false);
+                            //losePanel.SetActive(true);
                         }
                     }
                 }
@@ -209,9 +211,12 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
             yield return new WaitForSeconds(0.05f);
             bomb.spriteHolder.color = Color.red;
         }
+        yield return new WaitForSeconds(1);
+        inGamePanel.SetActive(false);
+        losePanel.SetActive(true);
 
-    }    
-    
+    }
+
     // Delay animation for Win
     public IEnumerator WinAnim()
     {
@@ -220,13 +225,15 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
             yield return new WaitForSeconds(0.05f);
             bomb.spriteHolder.color = Color.green;
         }
-
+        yield return new WaitForSeconds(1);
+        inGamePanel.SetActive(false);
+        victoryPanel.SetActive(true);
     }
 
     // Delay to show up Panels
     public IEnumerator PanelWaiting()
     {
           yield return new WaitForSeconds(50.0f);
-
+          
     }
 }
