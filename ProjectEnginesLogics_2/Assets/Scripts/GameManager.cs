@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     public void ExitGame()
     {
-        Debug.Log("Exiting the game");
+        //Debug.Log("Exiting the game");
         Application.Quit();
     }
 
