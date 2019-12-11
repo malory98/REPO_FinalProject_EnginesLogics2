@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fc0fa2294c986e4419d7d038ffcd9938
+guid: 28cec03f89a83fe4d9de2c05b1fed668
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Beetype
+  fontName: Sketch Book
   fontNames:
-  - Beetype
+  - Sketch Book
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

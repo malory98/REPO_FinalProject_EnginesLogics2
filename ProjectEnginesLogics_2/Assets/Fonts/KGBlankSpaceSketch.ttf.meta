@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 52c74128f69e1c04381125c8b6782997
+guid: 74f6dcd8c39b5534db92ad10d3d6f199
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: JLR Bizzy Beez
+  fontName: KG Blank Space Sketch
   fontNames:
-  - JLR Bizzy Beez
+  - KG Blank Space Sketch
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
