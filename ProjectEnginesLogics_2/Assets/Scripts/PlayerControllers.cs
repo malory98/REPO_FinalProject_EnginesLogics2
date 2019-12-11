@@ -35,6 +35,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     private void Start()
     {
+        firstClick = true;
         tileLoc = FindObjectOfType<TileLocation>();
         //gridMG = FindObjectOfType<GridManager>();
         //bombsCount = 10;  // place-holder number
