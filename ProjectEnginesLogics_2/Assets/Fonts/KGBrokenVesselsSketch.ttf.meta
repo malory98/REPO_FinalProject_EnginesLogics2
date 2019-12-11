@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d6b200932fc6e1c4d8f12bdce83e636e
+guid: eab736534fe3948438bc2397d2b5aa3b
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: SAVE THE HONEYBEE
+  fontName: KG Broken Vessels Sketch
   fontNames:
-  - SAVE THE HONEYBEE
+  - KG Broken Vessels Sketch
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

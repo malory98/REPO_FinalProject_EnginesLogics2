@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cbe8a0821f1470b45acc4ce64cb7f1c6
+guid: 49e7f83e33559f54592ea12a43eda725
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Hex Girlfriend
+  fontName: KG Blank Space Solid
   fontNames:
-  - Hex Girlfriend
+  - KG Blank Space Solid
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
