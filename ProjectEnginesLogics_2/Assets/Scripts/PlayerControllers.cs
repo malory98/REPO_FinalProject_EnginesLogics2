@@ -78,7 +78,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                 {
                     if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
                     {
-                        if (tile.isClicked == false && tile.isMarked == false)
+                        if (tile.isClicked == false && tile.isMarked == false && bombsCount > 0)
                         {
                             tile.isMarked = true; // Tile's isMarked state changes to prevent accidental missclicks
                             tile.spriteHolder.sprite = tile.tileSprites[1];  // Change Sprite to the Marked Sprite
@@ -107,7 +107,7 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                             bombsCount++; // count up the bombs;
                             if(tile.type == Type.Bomb)
                             {
-                                bombsCount--;
+                                bombsMarked--;
                             }
                         }
                     }
