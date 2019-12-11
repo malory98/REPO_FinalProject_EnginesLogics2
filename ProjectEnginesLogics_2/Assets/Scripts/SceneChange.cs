@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     public string sceneName;
+    public string resetName;
 
     public void ChangeScene()
     {
@@ -14,7 +15,7 @@ public class SceneChange : MonoBehaviour
 
     public void ResetScene()
     {
-        ResetScene();
+        SceneManager.LoadScene(resetName);
     }
 
 }
