@@ -28,6 +28,9 @@ public class GridManager : MonoBehaviour
     public List<TileSO> allTileSOs;
     public GameObject prefabTile;
 
+    public List<TileSO> firstTile;
+
+    public bool firstSet;
 
     // STARTS RAHEEL'S PART
     public static GridManager instance;
@@ -42,6 +45,7 @@ public class GridManager : MonoBehaviour
 
     public void Build()
     {
+        firstSet = false;
         // Fetches other scripts for 
         gameReset = FindObjectOfType<GameReset>();
         adjacentBombChecker = FindObjectOfType<AdjacentBombChecker>();
@@ -71,12 +75,27 @@ public class GridManager : MonoBehaviour
         playerControllers.Initialize();
         // Checks every safe tile for bomb neighbors then adds the number to them
         adjacentBombChecker.CheckAdjacentBombs();
+        // Sets the starting sprites
         foreach (TileSO singleTile in allTileSOs)
         {
-            singleTile.spriteHolder.gameObject.SetActive(true);
-            singleTile.spriteHolder.sprite = singleTile.tileSprites[0];
-            singleTile.spriteHolder.color = Color.yellow;
+            if (singleTile.numOfAdjacent == 0 && !firstSet && singleTile.type == Type.Safe)
+            {
+                singleTile.spriteHolder.gameObject.SetActive(true);
+                singleTile.spriteHolder.sprite = singleTile.tileSprites[0];
+                singleTile.spriteHolder.color = Color.green;
+                firstSet = true;
+                firstTile.Add(singleTile);
+                playerControllers.firstClick = false;
+                playerControllers.firstTile = firstTile;
+            }
+            else
+            {
+                singleTile.spriteHolder.gameObject.SetActive(true);
+                singleTile.spriteHolder.sprite = singleTile.tileSprites[0];
+                singleTile.spriteHolder.color = Color.yellow;
+            }
         }
+
         // Used to do 2 loops, figured just one was better
         //
         //foreach(TileSO singleTile in safeTileSOs)
@@ -177,6 +196,30 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    // Not working :/
+    //public void SetFirstTile()
+    //{
+    //    int targetAgj = new int();
+    //    bool tileSet = new bool();
+    //    tileSet = false;
+    //    for (int i = 0; i > 9; i++)
+    //    {
+    //        targetAgj = i;
+    //        foreach (TileSO singleTile in safeTileSOs)
+    //        {
+    //            if (singleTile.numOfAdjacent == targetAgj)
+    //            {
+    //                firstTile.Add(singleTile);
+    //                tileSet = true;
+    //            }
+    //            if(tileSet)
+    //            {
+    //                return;
+    //            }
+    //        }
+    //    }
+    //}
 
     // Flood fill algorithm that makes sure every tile on the game map will be accessable
     // from one to the other

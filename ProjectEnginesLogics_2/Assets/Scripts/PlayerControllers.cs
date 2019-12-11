@@ -21,6 +21,9 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
 
     public bool isGameOver;
 
+    public bool firstClick;
+    public List<TileSO> firstTile;
+
     public TextMeshProUGUI bombText;
 
     [SerializeField]
@@ -59,7 +62,8 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
         // I set it to initialize after the bombs render in the gridmanager
         //Initialize();
 
-        if (Input.GetMouseButtonDown(1) && gmMg.isPaused == false && isGameOver == false)  // getting Mouse input AND CHECKING is the game is not paused
+        if (Input.GetMouseButtonDown(1) && gmMg.isPaused == false 
+            && isGameOver == false && firstClick == true)  // getting Mouse input AND CHECKING is the game is not paused
         {
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000) && (!(hit.rigidbody == null)
@@ -134,34 +138,53 @@ public class PlayerControllers : MonoBehaviour   // Mouse clicks Left/Right
                     thisTileLocationX = tileLoc.locationX;
                     thisTileLocationZ = tileLoc.locationZ;
                 }
-
-                foreach (TileSO tile in gridMG.allTileSOs)
+                // Makes it so the first tile needs to be clicked to start the game
+                if (!firstClick)
                 {
-                    if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
+                    if (firstTile[0].coordX == thisTileLocationX && firstTile[0].coordZ == thisTileLocationZ)
                     {
-                        // If a safe tile is left clicked
-                        if (tile.isMarked == false && tile.type == Type.Safe)
+                        firstClick = true;
+                        firstTile[0].spriteHolder.color = Color.yellow;
+                        firstTile[0].spriteHolder.gameObject.SetActive(false);
+                        firstTile[0].adjacentTMP.gameObject.SetActive(true);
+                        firstTile[0].isClicked = true;
+                        if (firstTile[0].numOfAdjacent == 0)
                         {
-                            tile.spriteHolder.gameObject.SetActive(false); 
-                            tile.adjacentTMP.gameObject.SetActive(true);
-                            // Sets isClicked to true
-                            tile.isClicked = true;
-                            Debug.Log("Left click");
-                            // If the tile isn't adjacent to any bombTiles burst revealing all adjacent tiles
-                            if(tile.numOfAdjacent == 0)
-                            {
-                                StartCoroutine(BurstDelay(tile));
-                            }
+                            StartCoroutine(BurstDelay(firstTile[0]));
                         }
-                        else if (tile.isMarked == false && tile.type == Type.Bomb)
+
+                    }
+                }
+                else
+                {
+                    foreach (TileSO tile in gridMG.allTileSOs)
+                    {
+                        if (tile.coordX == thisTileLocationX && tile.coordZ == thisTileLocationZ)
                         {
-                            StartCoroutine(GameOverAnim());  // Player loses
-                            // GAME OVER
-                            isGameOver = true;
-                            // Moved into the coroutine
-                            //StartCoroutine(PanelWaiting());
-                            //inGamePanel.SetActive(false);
-                            //losePanel.SetActive(true);
+                            // If a safe tile is left clicked
+                            if (tile.isMarked == false && tile.type == Type.Safe)
+                            {
+                                tile.spriteHolder.gameObject.SetActive(false);
+                                tile.adjacentTMP.gameObject.SetActive(true);
+                                // Sets isClicked to true
+                                tile.isClicked = true;
+                                Debug.Log("Left click");
+                                // If the tile isn't adjacent to any bombTiles burst revealing all adjacent tiles
+                                if (tile.numOfAdjacent == 0)
+                                {
+                                    StartCoroutine(BurstDelay(tile));
+                                }
+                            }
+                            else if (tile.isMarked == false && tile.type == Type.Bomb)
+                            {
+                                StartCoroutine(GameOverAnim());  // Player loses
+                                                                 // GAME OVER
+                                isGameOver = true;
+                                // Moved into the coroutine
+                                //StartCoroutine(PanelWaiting());
+                                //inGamePanel.SetActive(false);
+                                //losePanel.SetActive(true);
+                            }
                         }
                     }
                 }
